@@ -1,21 +1,28 @@
 const apiBaseUrl = "http://localhost:8080/api/fila";
 
 const resultadoTexto = document.getElementById("resultado-texto");
+const nomeInput = document.getElementById("nome-cliente");
+const preferencialCheckbox = document.getElementById("tipo-preferencial");
 
 document.getElementById("adicionar").addEventListener("click", async () => {
-    const nome = prompt("Digite o nome do cliente:");
+    const nome = nomeInput.value.trim();
+    const preferencial = preferencialCheckbox.checked;
+
     if (!nome) {
-        resultadoTexto.innerText = "Operação cancelada.";
+        resultadoTexto.innerText = "Por favor, insira o nome do cliente.";
         return;
     }
 
     const response = await fetch(`${apiBaseUrl}/adicionar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome }),
+        body: JSON.stringify({ nome, preferencial }),
     });
     const result = await response.text();
     resultadoTexto.innerText = result;
+
+    nomeInput.value = "";
+    preferencialCheckbox.checked = false;
 });
 
 document.getElementById("remover").addEventListener("click", async () => {
@@ -29,9 +36,15 @@ document.getElementById("remover").addEventListener("click", async () => {
 document.getElementById("consultar").addEventListener("click", async () => {
     const response = await fetch(`${apiBaseUrl}/listar`);
     const clientes = await response.json();
-    resultadoTexto.innerText = clientes.length
-        ? "Fila atual: " + clientes.map(c => c.nome).join(", ")
-        : "A fila está vazia.";
+    if (clientes.length) {
+        resultadoTexto.innerHTML = clientes
+            .map((cliente, index) =>
+                `${index + 1}. ${cliente.nome} (${cliente.preferencial ? "Preferencial" : "Padrão"})`
+            )
+            .join("<br>");
+    } else {
+        resultadoTexto.innerText = "A fila está vazia.";
+    }
 });
 
 document.getElementById("proximo").addEventListener("click", async () => {

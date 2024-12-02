@@ -39,4 +39,3 @@ public class FilaController {
         return ResponseEntity.ok(filaService.listarFila());
     }
 }
-

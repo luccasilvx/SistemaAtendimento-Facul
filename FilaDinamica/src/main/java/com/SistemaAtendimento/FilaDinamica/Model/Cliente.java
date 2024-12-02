@@ -15,5 +15,5 @@ public class Cliente {
     private Long id;
     private String nome;
     private LocalDateTime dataHoraEntrada;
+    private boolean preferencial;
 }
-
