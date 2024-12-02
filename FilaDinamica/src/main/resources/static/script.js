@@ -54,3 +54,16 @@ document.getElementById("proximo").addEventListener("click", async () => {
         ? `Próximo Cliente: ${cliente.nome}`
         : "Nenhum cliente na fila.";
 });
+
+document.getElementById('tipo-preferencial').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('tipo-padrao').checked = false;
+    }
+});
+
+document.getElementById('tipo-padrao').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('tipo-preferencial').checked = false;
+    }
+});
+
