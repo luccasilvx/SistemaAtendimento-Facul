@@ -19,7 +19,7 @@ document.getElementById("adicionar").addEventListener("click", async () => {
         body: JSON.stringify({ nome, preferencial }),
     });
     const result = await response.text();
-    resultadoTexto.innerText = result;
+    resultadoTexto.innerText = `O cliente ${nome} foi adicionado com sucesso.`;
 
     nomeInput.value = "";
     preferencialCheckbox.checked = false;
@@ -29,7 +29,7 @@ document.getElementById("remover").addEventListener("click", async () => {
     const response = await fetch(`${apiBaseUrl}/atender`);
     const cliente = await response.json();
     resultadoTexto.innerText = cliente
-        ? `Cliente atendido: ${cliente.nome}`
+        ? `O cliente ${cliente.nome} será atendido.`
         : "Nenhum cliente na fila.";
 });
 
@@ -37,7 +37,7 @@ document.getElementById("consultar").addEventListener("click", async () => {
     const response = await fetch(`${apiBaseUrl}/listar`);
     const clientes = await response.json();
     if (clientes.length) {
-        resultadoTexto.innerHTML = clientes
+        resultadoTexto.innerHTML = "A situação da fila atual:<br>" + clientes
             .map((cliente, index) =>
                 `${index + 1}. ${cliente.nome} (${cliente.preferencial ? "Preferencial" : "Padrão"})`
             )
@@ -51,6 +51,6 @@ document.getElementById("proximo").addEventListener("click", async () => {
     const response = await fetch(`${apiBaseUrl}/proximo`);
     const cliente = await response.json();
     resultadoTexto.innerText = cliente
-        ? `Próximo cliente: ${cliente.nome}`
+        ? `Próximo Cliente: ${cliente.nome}`
         : "Nenhum cliente na fila.";
 });
